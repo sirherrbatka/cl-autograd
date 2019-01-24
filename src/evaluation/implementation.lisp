@@ -15,12 +15,13 @@
                                 state)
   (case (cl-autograd.graph:form-type form)
     (list
-     (evaluate-operator-value algebra
-                              (~> form
-                                  cl-autograd.graph:content
-                                  first)
-                              form
-                              state))
+     (cl-autograd.algebra:evaluate-operator-value
+      algebra
+      (~> form
+          cl-autograd.graph:content
+          first)
+      form
+      state))
     (number
      (setf (cl-autograd.tape:value-at state (cl-autograd.graph:index form))
            (cl-autograd.graph:content form)))))

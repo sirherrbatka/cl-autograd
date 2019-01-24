@@ -4,6 +4,7 @@
 (declaim (inline state-values))
 (declaim (inline state-gradients))
 
+
 (defstruct (state (:constructor construct-state))
   (values (make-array 0 :element-type 'double-float)
    :type (array double-float (*)))

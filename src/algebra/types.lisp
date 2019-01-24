@@ -17,6 +17,16 @@
   (~> state state-values (aref index)))
 
 
+(declaim (inline (setf value-at)))
+(defun (setf value-at) (new-val state index)
+  (setf (~> state state-values (aref index)) new-val))
+
+
+(declaim (inline (setf gradient-at)))
+(defun (setf gradient-at) (new-val state index)
+  (setf (~> state state-gradients (aref index)) new-val))
+
+
 (declaim (inline gradient-at))
 (defun gradient-at (state index)
   (~> state state-gradients (aref index)))

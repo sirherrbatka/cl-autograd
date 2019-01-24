@@ -10,3 +10,5 @@
 (defgeneric evaluate-operator-gradient (algebra form state))
 
 (defgeneric operatorp (algebra name))
+
+(defgeneric register-operator (algebra name))

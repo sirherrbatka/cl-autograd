@@ -1,4 +1,4 @@
-(in-package #:cl-autograd.algebra)
+(in-package #:cl-autograd.evaluation)
 
 
 (defgeneric evaluate-operator-value (algebra operator form state))

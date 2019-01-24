@@ -38,17 +38,5 @@
         (for form = (cl-autograd.graph:form-at argument-object i))
         (for position = (cl-autograd.graph:index form))
         (setf (aref values-tape position) argument)))
-    (iterate
-      (for i from (- forms-count 1 number-of-arguments) downto 0)
-      (for form = (cl-autograd.graph:form-at graph i))
-      (for required-arguments = nil)
-      (iterate
-        (with count = (cl-autograd.graph:forms-count form))
-        (for j from (1- count) downto 0)
-        (for subform = (cl-autograd.graph:form-at form j))
-        (for index = (cl-autograd.graph:index subform))
-        (push (aref values-tape index) required-arguments))
-      (for value = (cl-autograd.algebra:evaluate-form-value
-                    algebra form required-arguments))
-      (setf (aref values-tape i) value))
+    ;; TODO
     (svref values-tape 0)))

@@ -1,10 +1,10 @@
 (in-package #:cl-user)
 
 
-(defpackage :cl-autograd.algebra
+(defpackage :cl-autograd.evaluation
   (:use #:common-lisp
         #:cl-autograd.aux-package)
-  (:nicknames #:cl-autograd.algebra)
+  (:nicknames #:cl-autograd.evaluation)
   (:export
    #:evaluate-form-gradient
    #:evaluate-form-value

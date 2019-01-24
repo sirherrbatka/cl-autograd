@@ -1,4 +1,4 @@
-(in-package #:cl-autograd.algebra)
+(in-package #:cl-autograd.evaluation)
 
 
 (defmethod operatorp ((algebra standard-algebra) name)

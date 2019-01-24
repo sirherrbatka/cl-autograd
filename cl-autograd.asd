@@ -25,7 +25,8 @@
                 :components ((:file "package")
                              (:file "macros")
                              (:file "protocol")
-                             (:file "types")))
+                             (:file "types")
+                             (:file "implementation")))
                (:module "tape"
                 :components ((:file "package")
                              (:file "protocol")

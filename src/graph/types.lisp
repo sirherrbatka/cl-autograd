@@ -109,6 +109,3 @@
     (make 'expression
           :forms subforms-sequence
           :lambda-list wrapped-lambda-list)))
-
-
-(defparameter *data* (make-expression '(a b c) '(+ (* a b c) c)))

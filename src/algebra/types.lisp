@@ -1,6 +1,9 @@
 (in-package #:cl-autograd.algebra)
 
 
+(declaim (inline state-values))
+(declaim (inline state-gradients))
+
 (defstruct (state (:constructor construct-state))
   (values (make-array 0 :element-type 'double-float)
    :type (array double-float (*)))
@@ -8,14 +11,17 @@
    :type (array double-float (*))))
 
 
+(declaim (inline value-at))
 (defun value-at (state index)
   (~> state state-values (aref index)))
 
 
+(declaim (inline gradient-at))
 (defun gradient-at (state index)
   (~> state state-gradients (aref index)))
 
 
+(declaim (inline state-size))
 (defun state-size (state)
   (~> state state-values (array-dimension 0)))
 

@@ -13,11 +13,14 @@
 (defmethod evaluate-form-value ((algebra fundamental-algebra)
                                 (form cl-autograd.graph:form)
                                 state)
-  (when (eql (cl-autograd.graph:form-type form)
-             'list)
-    (evaluate-operator-value algebra
-                             (~> form
-                                 cl-autograd.graph:content
-                                 first)
-                             form
-                             state)))
+  (case (cl-autograd.graph:form-type form)
+    (list
+     (evaluate-operator-value algebra
+                              (~> form
+                                  cl-autograd.graph:content
+                                  first)
+                              form
+                              state))
+    (number
+     (setf (value-at state (cl-autograd.graph:index form))
+           (cl-autograd.graph:content form)))))

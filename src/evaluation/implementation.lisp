@@ -23,5 +23,6 @@
       form
       state))
     (number
-     (setf (cl-autograd.tape:value-at state (cl-autograd.graph:index form))
+     (setf (~>> form cl-autograd.graph:index
+                (cl-autograd.tape:value-at state))
            (cl-autograd.graph:content form)))))

@@ -21,6 +21,8 @@
                              (:file "protocol")
                              (:file "types")
                              (:file "methods")))
+               (:module "algebra"
+                :components ((:file "package")))
                (:module "evaluation"
                 :components ((:file "package")
                              (:file "macros")

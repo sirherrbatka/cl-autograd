@@ -7,4 +7,5 @@
   (:nicknames #:cl-autograd.algebra)
   (:export
    #:evaluate-form-value
+   #:evaluate-operator-value
    ))

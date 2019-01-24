@@ -6,9 +6,9 @@
         #:cl-autograd.aux-package)
   (:nicknames #:cl-autograd.tape)
   (:export
-   #:with-state
+   #:gradient-at
    #:make-state
    #:state-size
+   #:state-size
    #:value-at
-   #:gradient-at
-   #:state-size))
+   #:with-state))

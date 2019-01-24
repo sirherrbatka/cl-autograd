@@ -8,3 +8,5 @@
 (defgeneric evaluate-form-gradient (algebra form state))
 
 (defgeneric evaluate-operator-gradient (algebra form state))
+
+(defgeneric operatorp (algebra name))

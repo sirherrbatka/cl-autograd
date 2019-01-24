@@ -30,4 +30,7 @@
 
 
 (defclass standard-algebra (fundamental-algebra)
-  ())
+  ((%operators :type hash-table
+               :initform (make-hash-table)
+               :reader operators
+               :allocation :class)))

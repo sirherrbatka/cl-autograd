@@ -6,11 +6,11 @@
        (~>> algebra operators (gethash name) not null)))
 
 
-(defmethod register-operator ((algebra standard-algebra) (name symbol))
+(defmethod register-operator (algebra (name symbol))
   (setf (~>> algebra operators (gethash name)) name))
 
 
-(defmethod evaluate-form-value ((algebra fundamental-algebra)
+(defmethod evaluate-form-value (algebra
                                 (form cl-autograd.graph:form)
                                 state)
   (case (cl-autograd.graph:form-type form)
@@ -22,5 +22,5 @@
                               form
                               state))
     (number
-     (setf (value-at state (cl-autograd.graph:index form))
+     (setf (cl-autograd.tape:value-at state (cl-autograd.graph:index form))
            (cl-autograd.graph:content form)))))

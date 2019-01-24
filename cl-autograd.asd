@@ -21,15 +21,19 @@
                              (:file "protocol")
                              (:file "types")
                              (:file "methods")))
+               (:module "tape"
+                :components ((:file "package")
+                             (:file "macros")
+                             (:file "types")))
                (:module "algebra"
-                :components ((:file "package")))
+                :components ((:file "package")
+                             (:file "protocol")
+                             (:file "types")
+                             (:file "implementation")))
                (:module "evaluation"
                 :components ((:file "package")
                              (:file "macros")
                              (:file "protocol")
                              (:file "types")
                              (:file "implementation")))
-               (:module "tape"
-                :components ((:file "package")
-                             (:file "protocol")
-                             (:file "types")))))
+               ))

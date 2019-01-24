@@ -23,8 +23,8 @@
                              (:file "methods")))
                (:module "algebra"
                 :components ((:file "package")
-                             (:file "protocol")
                              (:file "macros")
+                             (:file "protocol")
                              (:file "types")))
                (:module "tape"
                 :components ((:file "package")

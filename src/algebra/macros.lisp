@@ -1,8 +1,10 @@
 (in-package #:cl-autograd.algebra)
 
 
-(defmacro define-operator ((algebra-type operator)
-                           value-function
-                           value-inline-form
-                           gradient-function
-                           gradient-inline-form))
+(defmacro with-state ((state) &body body)
+  (once-only (state)
+    `(macrolet ((value (form)
+                  `(value-at ,',state (cl-autograd.graph:index ,form)))
+                (gradient (form)
+                  `(gradient-at ,',state (cl-autograd.graph:index ,form))))
+       ,@body)))

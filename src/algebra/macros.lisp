@@ -15,7 +15,7 @@
                                    from (~> ,!form
                                             cl-autograd.graph:forms-count
                                             1-)
-                                   to 0)
+                                   downto 0)
                               (collect (~>> ,!form
                                             (cl-autograd.graph:form-at i)
                                             cl-autograd.graph:index
@@ -31,7 +31,7 @@
                                    from (~> ,!form
                                             cl-autograd.graph:forms-count
                                             1-)
-                                   to 0)
+                                   downto 0)
                               (collect (~>> ,!form
                                             (cl-autograd.graph:form-at i)
                                             cl-autograd.graph:index

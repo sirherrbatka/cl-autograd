@@ -10,32 +10,34 @@
                                            (,!operator (eql ',operator-name))
                                            ,!form
                                            ,!state)
-         (bind ((,arguments (iterate
-                              (for i
-                                   from (~> ,!form
-                                            cl-autograd.graph:forms-count
-                                            1-)
-                                   downto 0)
-                              (collect (~>> ,!form
-                                            (cl-autograd.graph:form-at i)
-                                            cl-autograd.graph:index
-                                            (cl-autograd.tape:value-at ,!state))
-                                at start))))
+         (bind ((,arguments
+                 (iterate
+                   (for i
+                        from (~> ,!form
+                                 cl-autograd.graph:forms-count
+                                 1-)
+                        downto 0)
+                   (collect (~>> ,!form
+                                 (cl-autograd.graph:form-at i)
+                                 cl-autograd.graph:index
+                                 (cl-autograd.tape:value-at ,!state))
+                     at start))))
            ,value-function))
        (defmethod inline-operator-value ((algebra ,algebra-type)
                                          (,!operator (eql ',operator-name))
                                          ,!form
                                          ,!state)
-         (bind ((,arguments (iterate
-                              (for i
-                                   from (~> ,!form
-                                            cl-autograd.graph:forms-count
-                                            1-)
-                                   downto 0)
-                              (collect (~>> ,!form
-                                            (cl-autograd.graph:form-at i)
-                                            cl-autograd.graph:index
-                                            (list 'cl-autograd.tape:value-at
-                                                  _ ',!state))
-                                at start))))
+         (bind ((,arguments
+                 (iterate
+                   (for i
+                        from (~> ,!form
+                                 cl-autograd.graph:forms-count
+                                 1-)
+                        downto 0)
+                   (collect (~>> ,!form
+                                 (cl-autograd.graph:form-at i)
+                                 cl-autograd.graph:index
+                                 (list 'cl-autograd.tape:value-at
+                                       _ ',!state))
+                     at start))))
            ,value-form)))))

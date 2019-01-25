@@ -35,6 +35,7 @@
                               (collect (~>> ,!form
                                             (cl-autograd.graph:form-at i)
                                             cl-autograd.graph:index
-                                            (list 'cl-autograd.tape:value-at _ ',!state))
+                                            (list 'cl-autograd.tape:value-at
+                                                  _ ',!state))
                                 at start))))
            ,value-form)))))

@@ -6,6 +6,7 @@
         #:cl-autograd.aux-package)
   (:nicknames #:cl-autograd.algebra)
   (:export
-   #:operatorp
+   #:evaluate-operator-gradient
    #:evaluate-operator-value
-   #:evaluate-operator-gradient))
+   #:inline-operator-value
+   #:operatorp))

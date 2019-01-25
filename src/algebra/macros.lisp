@@ -3,7 +3,9 @@
 
 (defmacro define-operator ((algebra-type operator-name arguments)
                            value-function
-                           value-form)
+                           value-form
+                           gradient-function
+                           gradient-form)
   (with-gensyms (!operator !state !form)
     `(progn
        (defmethod evaluate-operator-value ((algebra ,algebra-type)
@@ -40,4 +42,7 @@
                                  (list 'cl-autograd.tape:value-at
                                        _ ',!state))
                      at start))))
-           ,value-form)))))
+           ,value-form))
+       nil
+       nil
+       )))

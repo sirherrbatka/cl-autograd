@@ -37,4 +37,8 @@
                              (:file "protocol")
                              (:file "types")
                              (:file "implementation")))
-               ))
+               (:module "api"
+                :components ((:file "package")
+                             (:file "protocol")
+                             (:file "types")
+                             (:file "implementation")))))

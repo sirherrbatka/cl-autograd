@@ -8,3 +8,9 @@
 
 (defmethod register-operator (algebra (name symbol))
   (setf (~>> algebra operators (gethash name)) name))
+
+
+(define-operator
+    (standard-algebra + args weights value)
+    (cons '+ args)
+    (mapcar (constantly 1.0d0) weights))

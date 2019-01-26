@@ -41,7 +41,9 @@
 
 
 (defun gather-all-subforms (lambda-list tree)
-  (let ((vector (vect))
+  (let ((vector (vect (make 'form
+                            :index 0
+                            :content '=)))
         (arguments-table (make-hash-table)))
     (iterate
       (for l in lambda-list)
@@ -78,6 +80,10 @@
         (for (key value) in-hashtable arguments-table)
         (write-index (length vector) value)
         (vector-push-extend value vector))
+      (write-forms (vector (aref vector 1))
+                   (first-elt vector))
+      (vector-push-extend (aref vector 1)
+                          (parents result)))
       vector)))
 
 
@@ -109,3 +115,6 @@
     (make 'expression
           :forms subforms-sequence
           :lambda-list wrapped-lambda-list)))
+
+
+(defparameter *testing* (make-expression '(a b) '(* a b (+ a b))))

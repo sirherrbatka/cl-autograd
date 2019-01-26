@@ -10,5 +10,7 @@
    #:make-state
    #:state-size
    #:state-size
+   #:weight-at
+   #:state
    #:value-at
    #:with-state))

@@ -5,7 +5,9 @@
   (values (make-array 0 :element-type 'double-float)
    :type (array double-float (*)))
   (gradients (make-array 0 :element-type 'double-float)
-   :type (array double-float (*))))
+   :type (array double-float (*)))
+  (weights (make-array (list 0 0) :element-type 'double-float)
+   :type (array double-float (* *))))
 
 
 (declaim (inline value-at))
@@ -33,6 +35,19 @@
   (~> state state-values (array-dimension 0)))
 
 
-(defun make-state (size)
+(declaim (inline weight-at))
+(defun weight-at (state index weight-index)
+  (~> state state-weights (aref index weight-index)))
+
+
+(declaim (inline (setf weight-at)))
+(defun (setf weight-at) (new-value state index weight-index)
+  (setf (~> state state-weights (aref index weight-index))
+        new-value))
+
+
+(defun make-state (size weights-count)
   (construct-state :values (make-array size :element-type 'double-float)
-                   :gradients (make-array size :element-type 'double-float)))
+                   :gradients (make-array size :element-type 'double-float)
+                   :weights (make-array `(,size weights-count)
+                                        :element-type 'double-float)))

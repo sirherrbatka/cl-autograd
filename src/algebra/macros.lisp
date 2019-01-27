@@ -33,7 +33,7 @@
                                           ,!form
                                           ,!state)
          (bind ((,value `(cl-autograd.tape:value-at ,,!state
-                                                    (cl-autograd.graph:index ,,!form)))
+                                                    ,(cl-autograd.graph:index ,!form)))
                 (,arguments
                  (iterate
                    (for i

@@ -14,3 +14,5 @@
     (standard-algebra + args weights value)
     (cons '+ args)
     (mapcar (constantly 1.0d0) weights))
+
+(register-operator *standard-algebra* '+)

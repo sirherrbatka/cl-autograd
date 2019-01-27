@@ -24,3 +24,6 @@
                                        ,parent-index))
                 (collecting `(* (the 'double-float ,weight)
                                 (the 'double-float ,parent-gradient))))))))
+
+
+(defgeneric make-state (expression))

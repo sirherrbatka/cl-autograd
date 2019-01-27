@@ -9,3 +9,6 @@
   ((%operators :type hash-table
                :initform (make-hash-table)
                :reader operators)))
+
+
+(defvar *standard-algebra* (make 'standard-algebra))

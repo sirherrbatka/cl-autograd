@@ -82,9 +82,9 @@
         (vector-push-extend value vector))
       (write-forms (vector (aref vector 1))
                    (first-elt vector))
-      (vector-push-extend (aref vector 1)
-                          (parents result)))
-      vector)))
+      (vector-push-extend (first-elt vector)
+                          (~> vector (aref 1) parents)))
+      vector))
 
 
 (defun make-expression (lambda-list form)

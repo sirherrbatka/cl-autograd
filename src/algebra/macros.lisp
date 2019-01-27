@@ -19,10 +19,10 @@
                                  1-)
                         downto 0)
                    (collect (~>> ,!form
-                                 (cl-autograd.graph:form-at i)
+                                 (cl-autograd.graph:form-at _ i)
                                  cl-autograd.graph:index
                                  (list 'cl-autograd.tape:value-at
-                                       ',!state _))
+                                       ,!state))
                      at start))))
            (declare (ignorable ,arguments))
            `(setf (cl-autograd.tape:value-at ,,!state
@@ -57,7 +57,7 @@
                    (for child = (cl-autograd.graph:form-at ,!form i))
                    (for parent-position = (iterate
                                             (for i from 0 below (cl-autograd.graph:parents-count child))
-                                            (for parent = (cl-autograd.graph:parent child))
+                                            (for parent = (cl-autograd.graph:parent-at child i))
                                             (finding i such-that (eq parent ,!form))))
                    (collect (~>> child
                                  cl-autograd.graph:index

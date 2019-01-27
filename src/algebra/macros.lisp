@@ -45,7 +45,7 @@
                                  (cl-autograd.graph:form-at i)
                                  cl-autograd.graph:index
                                  (list 'cl-autograd.tape:value-at
-                                       ',!state _))
+                                       ,!state _))
                      at start)))
                 (,weights
                  (iterate
@@ -62,7 +62,7 @@
                    (collect (~>> child
                                  cl-autograd.graph:index
                                  (list 'cl-autograd.tape:weight-at
-                                       ',!state _ parent-position))
+                                       ,!state _ parent-position))
                      at start))))
            (declare (ignorable ,value ,arguments ,weights))
            ,weight-form)))))

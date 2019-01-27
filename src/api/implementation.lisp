@@ -19,16 +19,32 @@
 
 
 (defmethod inline-gradient ((expression expression)
-                            state
-                            gradient)
+                            state)
   `(progn
      ,@(iterate
+         (with graph = (~> expression graph))
          (for i
               from 1
-              below (~> expression cl-autograd.graph:forms-count))
-         (for form = (cl-autograd.graph:form-at expression i))
+              below (~> graph cl-autograd.graph:forms-count))
+         (for form = (cl-autograd.graph:form-at graph i))
          (collecting (cl-autograd.evaluation:inline-form-gradient form
                                                                   state)))))
+
+
+(defmethod inline-weight ((expression expression)
+                          state)
+  `(progn
+     (setf (cl-autograd.tape:weight-at ,state 1 0) 1.0d0)
+     ,@(iterate
+         (with graph = (~> expression graph))
+         (with algebra = (~> expression algebra))
+         (for i
+              from 1
+              below (~> graph cl-autograd.graph:forms-count))
+         (for form = (cl-autograd.graph:form-at graph i))
+         (adjoining (cl-autograd.evaluation:inline-form-weight algebra
+                                                               form
+                                                               state)))))
 
 
 (defmethod inline-binding ((expression expression)
@@ -55,15 +71,24 @@
                               ,arg))))))
 
 
+(defmethod compile-gradient ((expression expression))
+  (with-gensyms (!state)
+    (setf (slot-value expression '%gradient-function)
+          (compile nil
+                   (print
+                    `(lambda (,!state)
+                       ,(inline-weight expression !state)
+                       ,(inline-gradient expression !state)))))))
+
+
 (defmethod compile-expression ((expression expression) arguments)
   (with-gensyms (!state)
     (setf (slot-value expression '%value-function)
           (compile nil
-                   (print
-                    `(lambda (,!state ,@arguments)
-                       ,(inline-binding expression !state arguments)
-                       ,(inline-value expression !state)
-                       (cl-autograd.tape:value-at ,!state 1)))))))
+                   `(lambda (,!state ,@arguments)
+                      ,(inline-binding expression !state arguments)
+                      ,(inline-value expression !state)
+                      (cl-autograd.tape:value-at ,!state 1))))))
 
 
 (defmethod initialize-instance :after ((expression expression) &rest initargs)
@@ -72,11 +97,19 @@
                       (~>> expression
                            graph
                            cl-autograd.graph:lambda-list
-                           (mapcar #'cl-autograd.graph:name))))
+                           (mapcar #'cl-autograd.graph:name)))
+  (compile-gradient expression))
+
+
+(defmethod make-state ((expression expression))
+  (~> expression graph cl-autograd.evaluation:make-state))
 
 
 (defmethod value ((expression expression) values &optional state)
   (check-type values list)
-  (let ((state (or state
-                   (~> expression graph cl-autograd.evaluation:make-state))))
+  (let ((state (or state (make-state expression))))
     (apply (value-function expression) state values)))
+
+
+(defmethod gradient ((expression expression) state)
+  (~> expression gradient-function (funcall state)))

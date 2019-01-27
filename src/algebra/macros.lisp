@@ -32,8 +32,8 @@
                                           (,!operator (eql ',operator-name))
                                           ,!form
                                           ,!state)
-         (bind ((,value `(cl-autograd.tape:value-at (cl-autograd.graph:index ,,!form)
-                                                    ,,!state))
+         (bind ((,value `(cl-autograd.tape:value-at ,,!state
+                                                    (cl-autograd.graph:index ,,!form)))
                 (,arguments
                  (iterate
                    (for i
@@ -41,11 +41,11 @@
                                  cl-autograd.graph:forms-count
                                  1-)
                         downto 0)
-                   (collect (~>> ,!form
-                                 (cl-autograd.graph:form-at i)
-                                 cl-autograd.graph:index
-                                 (list 'cl-autograd.tape:value-at
-                                       ,!state _))
+                   (collect (~> ,!form
+                                (cl-autograd.graph:form-at i)
+                                cl-autograd.graph:index
+                                (list 'cl-autograd.tape:value-at
+                                      ,!state _))
                      at start)))
                 (,weights
                  (iterate

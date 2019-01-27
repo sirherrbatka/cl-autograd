@@ -13,7 +13,7 @@
 (define-operator
     (standard-algebra + args weights value)
     (cons '+ args)
-    (mapcar (lambda (x) `(setf ,x 1.0d0)) weights))
+    (cons 'progn (mapcar (lambda (x) `(setf ,x 1.0d0)) weights)))
 (register-operator *standard-algebra* '+)
 
 

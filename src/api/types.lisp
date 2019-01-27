@@ -19,5 +19,12 @@
         :graph (cl-autograd.graph:make-expression lambda-list form)))
 
 
-(defparameter *expression* (make-expression '(a b) '(+ a b)))
-(~> *expression* (value '(1.0d0 2.0d0)) print)
+(defparameter *expression* (make-expression '(x y) '(+ (* x y) (sin x))))
+(progn
+  (defparameter *state* (make-state *expression*))
+  (~> *expression* (value '(50.5d0 30.2d0) *state*) print)
+  (setf (cl-autograd.tape:gradient-at *state* 0) 1.0d0)
+  (gradient *expression* *state*))
+
+(print
+ (- (cl-autograd.tape:gradient-at *state* 4) 30.2d0 (cos 50.5d0)))

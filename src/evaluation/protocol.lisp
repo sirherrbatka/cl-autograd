@@ -22,8 +22,8 @@
                 (for parent-gradient = `(cl-autograd.tape:gradient-at
                                          ,state
                                        ,parent-index))
-                (collecting `(* (the 'double-float ,weight)
-                                (the 'double-float ,parent-gradient))))))))
+                (collecting `(* (the double-float ,weight)
+                                (the double-float ,parent-gradient))))))))
 
 
 (defgeneric make-state (expression))

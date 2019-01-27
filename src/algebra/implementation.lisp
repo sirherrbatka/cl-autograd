@@ -27,3 +27,10 @@
         (for list = (remove a.w args.weights))
         (collecting `(setf ,(cdr a.w) (+ ,@(mapcar #'car list)))))))
 (register-operator *standard-algebra* '*)
+
+
+(define-operator
+    (standard-algebra sin args weights value)
+    (cons 'sin args)
+    `(setf ,@weights (cos ,value)))
+(register-operator *standard-algebra* 'sin)

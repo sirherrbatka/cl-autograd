@@ -121,9 +121,12 @@
 
 
 (defmethod value ((expression expression) values &optional state)
-  (check-type values list)
   (let ((state (or state (make-state expression))))
-    (apply (value-function expression) state values)))
+    (ecase (expression-type expression)
+      (lambda (check-type values list)
+        (apply (value-function expression) state values))
+      (vector (check-type values vector)
+       (funcall (value-function expression) state values)))))
 
 
 (defmethod gradient ((expression expression) state)

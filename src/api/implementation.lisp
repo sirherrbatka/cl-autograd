@@ -96,14 +96,25 @@
   (with-gensyms (!state !vector)
     (setf (slot-value expression '%value-function)
           (compile nil
-                   `(lambda ,(ecase (expression-type expression)
-                               (lambda `(,!state ,@arguments))
-                               (vector
-                                (setf arguments !state)
-                                `(,!state ,!vector)))
-                      ,(inline-binding expression !state arguments)
-                      ,(inline-value expression !state)
-                      (cl-autograd.tape:value-at ,!state 1))))))
+                   (print
+                    `(lambda ,(ecase (expression-type expression)
+                                (lambda `(,!state ,@arguments))
+                                (vector
+                                 (setf arguments !state)
+                                 `(,!state ,!vector)))
+                       (declare (optimize (speed 3) (safety 0) (debug 0) (space 0))
+                                (type cl-autograd.tape:state ,!state)
+                                ,(ecase (expression-type expression)
+                                   (lambda `(type double-float ,@arguments))
+                                   (vector
+                                    `(type (array double-float (,(~> expression
+                                                                     graph
+                                                                     cl-autograd.graph:lambda-list
+                                                                     length)))
+                                           ,arguments))))
+                       ,(inline-binding expression !state arguments)
+                       ,(inline-value expression !state)
+                       (cl-autograd.tape:value-at ,!state 1)))))))
 
 
 (defmethod initialize-instance :after ((expression expression) &rest initargs)

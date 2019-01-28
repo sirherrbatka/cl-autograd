@@ -3,11 +3,11 @@
 
 (defstruct (state (:constructor construct-state))
   (values (make-array 0 :element-type 'double-float)
-   :type (array double-float (*)))
+   :type (simple-array double-float (*)))
   (gradients (make-array 0 :element-type 'double-float)
-   :type (array double-float (*)))
+   :type (simple-array double-float (*)))
   (weights (make-array (list 0 0) :element-type 'double-float)
-   :type (array double-float (* *))))
+   :type (simple-array double-float (* *))))
 
 
 (declaim (inline value-at))

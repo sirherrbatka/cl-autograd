@@ -2,7 +2,10 @@
 
 
 (defclass expression ()
-  ((%algebra :reader algebra
+  ((%expression-type :reader expression-type
+                     :type symbol
+                     :initarg :expression-type)
+   (%algebra :reader algebra
              :initarg :algebra)
    (%graph :reader graph
            :initarg :graph)
@@ -13,10 +16,13 @@
 
 
 (defun make-expression (lambda-list form
-                        &key (algebra cl-autograd.algebra:*standard-algebra*))
+                        &key (algebra cl-autograd.algebra:*standard-algebra*)
+                          (expression-type 'lambda))
+  (check-type expression-type (member 'lambda 'vector))
   (make 'expression
         :algebra algebra
-        :graph (cl-autograd.graph:make-expression lambda-list form)))
+        :graph (cl-autograd.graph:make-expression lambda-list form)
+        :expression-type expression-type))
 
 
 (defparameter *expression* (make-expression '(x y) '(+ (* x y) (sin x))))

@@ -53,22 +53,34 @@
   (check-type arguments list)
   (check-type state symbol)
   (let* ((arguments (remove-duplicates arguments))
+         (type (expression-type expression))
          (lambda-list (~> expression graph cl-autograd.graph:lambda-list)))
     (unless (eql (length arguments) (length lambda-list))
       (error "Missing argument!"))
-    `(progn
-       ,@(iterate
-           (for arg in arguments)
-           (for accepted-argument = (find arg lambda-list :key
-                                          #'cl-autograd.graph:name))
-           (when (null accepted-argument)
-             (error "Unknown argument!"))
-           (when (~> accepted-argument cl-autograd.graph:forms-count zerop)
-             (next-iteration))
-           (for form = (cl-autograd.graph:form-at accepted-argument 0))
-           (for index = (cl-autograd.graph:index form))
-           (collecting `(setf (cl-autograd.tape:value-at ,state ,index)
-                              ,arg))))))
+    (ecase type
+      (lambda `(progn
+                 ,@(iterate
+                     (for arg in arguments)
+                     (for accepted-argument = (find arg lambda-list :key
+                                                    #'cl-autograd.graph:name))
+                     (when (null accepted-argument)
+                       (error "Unknown argument!"))
+                     (when (~> accepted-argument cl-autograd.graph:forms-count zerop)
+                       (next-iteration))
+                     (for form = (cl-autograd.graph:form-at accepted-argument 0))
+                     (for index = (cl-autograd.graph:index form))
+                     (collecting `(setf (cl-autograd.tape:value-at ,state ,index)
+                                        ,arg)))))
+      (vector `(progn
+                 ,@(iterate
+                     (for accepted-argument in lambda-list)
+                     (for i from 0)
+                     (when (~> accepted-argument cl-autograd.graph:forms-count zerop)
+                       (next-iteration))
+                     (for form = (cl-autograd.graph:form-at accepted-argument 0))
+                     (for index = (cl-autograd.graph:index form))
+                     (collecting `(setf (cl-autograd.tape:value-at ,state ,index)
+                                        (aref ,arguments ,i)))))))))
 
 
 (defmethod compile-gradient ((expression expression))
@@ -82,10 +94,14 @@
 
 
 (defmethod compile-expression ((expression expression) arguments)
-  (with-gensyms (!state)
+  (with-gensyms (!state !vector)
     (setf (slot-value expression '%value-function)
           (compile nil
-                   `(lambda (,!state ,@arguments)
+                   `(lambda ,(ecase (expression-type expression)
+                               (lambda `(,!state ,@arguments))
+                               (vector
+                                (setf arguments !state)
+                                `(,!state ,!vector)))
                       ,(inline-binding expression !state arguments)
                       ,(inline-value expression !state)
                       (cl-autograd.tape:value-at ,!state 1))))))

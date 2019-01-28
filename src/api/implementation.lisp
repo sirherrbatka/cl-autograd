@@ -87,10 +87,9 @@
   (with-gensyms (!state)
     (setf (slot-value expression '%gradient-function)
           (compile nil
-                   (print
-                    `(lambda (,!state)
-                       ,(inline-weight expression !state)
-                       ,(inline-gradient expression !state)))))))
+                   `(lambda (,!state)
+                      ,(inline-weight expression !state)
+                      ,(inline-gradient expression !state))))))
 
 
 (defmethod compile-expression ((expression expression) arguments)

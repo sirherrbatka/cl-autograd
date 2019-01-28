@@ -18,7 +18,7 @@
 (defun make-expression (lambda-list form
                         &key (algebra cl-autograd.algebra:*standard-algebra*)
                           (expression-type 'lambda))
-  (check-type expression-type (member 'lambda 'vector))
+  (check-type expression-type (member lambda vector))
   (make 'expression
         :algebra algebra
         :graph (cl-autograd.graph:make-expression lambda-list form)

@@ -25,7 +25,8 @@
         :expression-type expression-type))
 
 
-(defparameter *expression* (make-expression '(x y) '(+ (* x y) (sin x))))
+(defparameter *expression* (make-expression '(x y) '(+ (* x y) (sin x))
+                                            :expression-type 'vector))
 (progn
   (defparameter *state* (make-state *expression*))
   (~> *expression* (value '(50.5d0 30.2d0) *state*) print)

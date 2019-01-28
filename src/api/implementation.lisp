@@ -109,10 +109,11 @@
                                 ,(ecase (expression-type expression)
                                    (lambda `(type double-float ,@arguments))
                                    (vector
-                                    `(type (array double-float (,(~> expression
-                                                                     graph
-                                                                     cl-autograd.graph:lambda-list
-                                                                     length)))
+                                    `(type (simple-array double-float
+                                                         (,(~> expression
+                                                               graph
+                                                               cl-autograd.graph:lambda-list
+                                                               length)))
                                            ,arguments))))
                        ,(inline-binding expression !state arguments)
                        ,(inline-value expression !state)

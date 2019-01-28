@@ -50,9 +50,11 @@
 (defmethod inline-binding ((expression expression)
                            state
                            arguments)
-  (check-type arguments list)
+  (check-type arguments (or symbol list))
   (check-type state symbol)
-  (let* ((arguments (remove-duplicates arguments))
+  (let* ((arguments (if (symbolp arguments)
+                        arguments
+                        (remove-duplicates arguments)))
          (type (expression-type expression))
          (lambda-list (~> expression graph cl-autograd.graph:lambda-list)))
     (unless (eql (length arguments) (length lambda-list))

@@ -136,10 +136,13 @@
 
 (defmethod value ((expression expression) values &optional state)
   (let ((state (or state (make-state expression))))
+    (check-type state cl-autograd.tape:state)
     (ecase (expression-type expression)
       (lambda (check-type values list)
+        (map nil (lambda (x) (check-type x double-float)) values)
         (apply (value-function expression) state values))
-      (vector (check-type values vector)
+      (vector
+       (check-type values (simple-array double-float (*)))
        (funcall (value-function expression) state values)))))
 
 

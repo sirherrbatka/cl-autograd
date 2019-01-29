@@ -24,7 +24,7 @@
                                  (list 'cl-autograd.tape:value-at
                                        ,!state))
                      at start))))
-           (declare (ignorable ,arguments))
+           (declare (ignorable ,@(flatten (list arguments))))
            `(setf (cl-autograd.tape:value-at ,,!state
                                              ,(cl-autograd.graph:index ,!form))
                   ,,value-form)))
@@ -64,5 +64,5 @@
                                  (list 'cl-autograd.tape:weight-at
                                        ,!state _ parent-position))
                      at start))))
-           (declare (ignorable ,value ,arguments ,weights))
+           (declare (ignorable ,value ,@(flatten (list arguments)) ,@(flatten (list weights))))
            ,weight-form)))))
